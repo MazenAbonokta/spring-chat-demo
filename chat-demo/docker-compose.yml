@@ -1,0 +1,38 @@
+services:
+  postgres:
+    container_name: chat-db
+    image: postgres
+    environment:
+      POSTGRES_USER: demo
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: chat_demo
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - chat-demo
+
+  keycloak:
+    container_name: keycloak_container
+    image: quay.io/keycloak/keycloak:26.0.0
+    ports:
+      - 9090:8080
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    networks:
+      - chat-demo
+    depends_on:
+      - postgres
+    command:
+      - "start-dev"
+
+volumes:
+  postgres:
+    driver: local
+
+networks:
+  chat-demo:
+    driver: bridge
