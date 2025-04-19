@@ -1,6 +1,6 @@
 services:
   postgres:
-    container_name: chat-db
+    container_name: Chat-db
     image: postgres
     environment:
       POSTGRES_USER: demo
