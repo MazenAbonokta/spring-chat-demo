@@ -1,4 +1,4 @@
-package com.demo.chatdemo.dto;
+package com.demo.chatdemo.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

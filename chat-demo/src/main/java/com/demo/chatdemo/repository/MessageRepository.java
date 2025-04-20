@@ -17,4 +17,6 @@ List<Message> findAllByChatId(Long chatId);
     @Transactional
     @Query("UPDATE Message m SET m.state = :state WHERE m.chat.id = :id")
     void updateMessageStateById(@Param("id") Long id, @Param("state") String state);
+
+
 }

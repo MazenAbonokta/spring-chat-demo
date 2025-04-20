@@ -1,6 +1,6 @@
 package com.demo.chatdemo.service;
 
-import com.demo.chatdemo.dto.ChatResponse;
+import com.demo.chatdemo.dto.response.ChatResponse;
 import com.demo.chatdemo.entity.Chat;
 import org.springframework.security.core.Authentication;
 

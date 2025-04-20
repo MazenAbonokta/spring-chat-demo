@@ -1,8 +1,7 @@
 package com.demo.chatdemo.controller;
 
-import com.demo.chatdemo.dto.ChatResponse;
-import com.demo.chatdemo.dto.StringResponse;
-import com.demo.chatdemo.entity.Chat;
+import com.demo.chatdemo.dto.response.ChatResponse;
+import com.demo.chatdemo.dto.response.StringResponse;
 import com.demo.chatdemo.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
 package com.demo.chatdemo.exception;
 
 
-import com.demo.chatdemo.dto.ErrorResponseDto;
+import com.demo.chatdemo.dto.response.ErrorResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
