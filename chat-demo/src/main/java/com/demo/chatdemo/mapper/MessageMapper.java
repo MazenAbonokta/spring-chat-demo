@@ -1,5 +1,6 @@
 package com.demo.chatdemo.mapper;
 
+import com.demo.chatdemo.config.FileUtils;
 import com.demo.chatdemo.constant.MessageState;
 import com.demo.chatdemo.constant.MessageType;
 import com.demo.chatdemo.dto.request.MessageRequest;
@@ -32,6 +33,7 @@ public class MessageMapper {
                 .messageType(message.getType())
                 .messageState(message.getState())
                 .id(message.getId())
+                .media(FileUtils.getFileBytes(message.getMediaFilePath()))
                 .build();
     }
 }
