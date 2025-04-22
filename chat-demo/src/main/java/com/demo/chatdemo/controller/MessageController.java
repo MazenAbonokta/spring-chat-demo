@@ -3,6 +3,8 @@ package com.demo.chatdemo.controller;
 import com.demo.chatdemo.dto.request.MessageRequest;
 import com.demo.chatdemo.dto.response.MessageResponse;
 import com.demo.chatdemo.service.MessageService;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/message")
+@Tag(name = "Message", description = "Message API")
 public class MessageController {
     @Autowired
     MessageService messageService;
@@ -25,6 +28,7 @@ public class MessageController {
     @PostMapping(value = "/upload-media",consumes = "multipart/form-data")
     @ResponseStatus(HttpStatus.CREATED)
     public void uploadMediaMessage(@RequestParam("chat-id") String chatId,
+                                   @Parameter()
                                    @RequestParam("file") MultipartFile file,
                                    Authentication currentUser) {
         messageService.uploadMediaMessage(chatId,file,currentUser);
