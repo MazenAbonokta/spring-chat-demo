@@ -1,20 +1,25 @@
 package com.demo.chatdemo.Imp;
 
+import com.demo.chatdemo.config.FileUtils;
 import com.demo.chatdemo.constant.MessageState;
 import com.demo.chatdemo.constant.MessageType;
+import com.demo.chatdemo.constant.NotificationType;
 import com.demo.chatdemo.dto.request.MessageRequest;
 import com.demo.chatdemo.dto.response.MessageResponse;
 import com.demo.chatdemo.entity.Chat;
 import com.demo.chatdemo.entity.Message;
+import com.demo.chatdemo.entity.Notification;
 import com.demo.chatdemo.exception.ResourceNotFoundException;
 import com.demo.chatdemo.mapper.MessageMapper;
 import com.demo.chatdemo.repository.ChatRepository;
 import com.demo.chatdemo.repository.MessageRepository;
 import com.demo.chatdemo.service.FileService;
 import com.demo.chatdemo.service.MessageService;
+import com.demo.chatdemo.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -28,7 +33,9 @@ public  class MessageServiceImp implements MessageService {
     ChatRepository chatRepository;
     @Autowired
     FileService fileService;
-@Autowired
+    @Autowired
+    NotificationService notificationService;
+    @Autowired
     MessageMapper messageMapper;
     @Override
     public List<Message> findAllByChatId(Long chatId) {
@@ -46,7 +53,16 @@ public  class MessageServiceImp implements MessageService {
 
         Message message=messageMapper.fromMessageRequestToMessage(messageRequest,chat);
         messageRepository.save(message);
-
+        Notification notification=Notification.builder()
+                .chatId(messageRequest.getChatId())
+                .messageType(message.getType())
+                .chatName(message.getChat().getChatName(message.getSenderId()))
+                .senderId(message.getSenderId())
+                .receiverId(message.getReceiverId())
+                .content(message.getContent())
+                .type(NotificationType.MESSAGE)
+                .build();
+        notificationService.sendNotification(message.getReceiverId(),notification);
     }
 
     @Override
@@ -60,10 +76,20 @@ public  class MessageServiceImp implements MessageService {
     }
 
     @Override
+    @Transactional
     public void setMessageStateToSeen(String chatId, Authentication currentUser) {
         Chat chat=chatRepository.findById(chatId).orElseThrow(()->new ResourceNotFoundException("Chat not found with id :"+chatId));
-        //        String recipientId=getRecipientId(chat,currentUser);
+              String recipientId=getRecipientId(chat,currentUser);
         updateMessageStateById(Long.parseLong(chatId),"SEEN");
+        Notification notification=Notification.builder()
+                .chatId(chat.getId())
+
+                .senderId(getSenderId(chat,currentUser))
+                .receiverId(recipientId)
+
+                .type(NotificationType.SEEN)
+                .build();
+        notificationService.sendNotification(recipientId,notification);
 
     }
 
@@ -82,6 +108,16 @@ public  class MessageServiceImp implements MessageService {
             .chat(chat)
             .build();
         messageRepository.save(message);
+        Notification notification=Notification.builder()
+                .chatId(chatId)
+                .chatName(chat.getChatName(message.getSenderId()))
+                .senderId(senderId)
+                .receiverId(recipientId)
+                .media(FileUtils.getFileBytes(message.getMediaFilePath()))
+                .type(NotificationType.IMAGE)
+                .messageType(MessageType.IMAGE)
+                .build();
+        notificationService.sendNotification(recipientId,notification);
 
     }
 
