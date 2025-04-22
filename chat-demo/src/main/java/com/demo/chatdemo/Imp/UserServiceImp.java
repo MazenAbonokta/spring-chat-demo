@@ -1,18 +1,23 @@
 package com.demo.chatdemo.Imp;
 
+import com.demo.chatdemo.dto.response.UserResponse;
 import com.demo.chatdemo.entity.User;
 import com.demo.chatdemo.exception.ResourceNotFoundException;
+import com.demo.chatdemo.mapper.UserMapper;
 import com.demo.chatdemo.repository.UserRepository;
 import com.demo.chatdemo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImp implements UserService {
     @Autowired
     private UserRepository  userRepository;
+    @Autowired
+    UserMapper userMapper;
     @Override
     public User findByEmail(String email) {
 
@@ -22,10 +27,12 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public List<User> findAllExceptSelf(Long Id) {
+    public List<UserResponse> findAllExceptSelf(Long Id) {
 
         List<User> users= userRepository.findAllExceptSelf(Id);
-        return users;
+
+        List<UserResponse> userResponseList =users.stream().map(user->userMapper.toUserResponse(user)).collect(Collectors.toList());
+        return userResponseList;
     }
 
     @Override

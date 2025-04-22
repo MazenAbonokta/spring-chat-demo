@@ -1,5 +1,6 @@
 package com.demo.chatdemo.mapper;
 
+import com.demo.chatdemo.dto.response.UserResponse;
 import com.demo.chatdemo.entity.User;
 import org.springframework.stereotype.Component;
 
@@ -29,5 +30,15 @@ public class UserMapper {
         }
         user.setLastSeen(LocalDateTime.now());
         return user;
+    }
+    public UserResponse toUserResponse(User user){
+        return UserResponse.builder()
+                .id(user.getId().toString())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .isOnline(user.isOnline())
+                .lastSeen(user.getLastSeen())
+                .build();
     }
 }
