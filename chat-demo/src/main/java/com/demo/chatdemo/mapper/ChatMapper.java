@@ -10,12 +10,12 @@ public class ChatMapper {
     public ChatResponse toChatResponse(Chat chat,String userId){
         return ChatResponse.builder()
                 .id(Long.getLong(chat.getId()))
-                .name(chat.getRecipient().getFirstName()+" "+chat.getRecipient().getLastName())
+                .name(chat.getReceiver().getFirstName()+" "+chat.getReceiver().getLastName())
                 .lastMessage(chat.getLastMessage())
-                .receiverId(chat.getRecipient().id.toString())
+                .receiverId(chat.getReceiver().id.toString())
                 .senderId(userId)
                 .unreadCount(chat.getUnreadMessage(userId))
-                .isReceiverOnline(chat.getRecipient().isOnline())
+                .isReceiverOnline(chat.getReceiver().isOnline())
                 .build();
     }
 

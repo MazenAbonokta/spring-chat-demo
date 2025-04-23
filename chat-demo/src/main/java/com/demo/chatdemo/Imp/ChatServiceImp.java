@@ -49,15 +49,15 @@ public  class ChatServiceImp implements ChatService {
         Optional<Chat> existingChat= chatRepository.findDistinctBySenderIdAndReceiverId(senderId,receiverId);
         if(existingChat.isPresent())
         {
-            return existingChat.get().getId();
+            return existingChat.get().getId().toString();
         }
 
         User user=userRepository.findById(senderId).orElseThrow(()->new ResourceNotFoundException("User not found with id :"+senderId));
         User recipient=userRepository.findById(receiverId).orElseThrow(()->new ResourceNotFoundException("User not found with id :"+receiverId));
         Chat chat=new Chat();
         chat.setSender(user);
-        chat.setRecipient(recipient);
+        chat.setReceiver(recipient);
         chatRepository.save(chat);
-        return chat.getId();
+        return chat.getId().toString();
     }
 }

@@ -39,7 +39,7 @@ public  class MessageServiceImp implements MessageService {
     MessageMapper messageMapper;
     @Override
     public List<Message> findAllByChatId(Long chatId) {
-        return messageRepository.findAllByChatId(chatId);
+        return messageRepository.findAllByChatId(chatId.toString());
     }
 
     @Override
@@ -68,7 +68,7 @@ public  class MessageServiceImp implements MessageService {
     @Override
     public List<MessageResponse> findAllMessagesByChatId(String chatId) {
 
-        List<Message> messages=  messageRepository.findAllByChatId(Long.getLong(chatId));
+        List<Message> messages=  messageRepository.findAllByChatId(chatId);
 
         List<MessageResponse> messageResponses=messages.stream().map(message -> messageMapper.fromMessageToMessageResponse(message))
                 .collect(Collectors.toList());
@@ -82,7 +82,7 @@ public  class MessageServiceImp implements MessageService {
               String recipientId=getRecipientId(chat,currentUser);
         updateMessageStateById(Long.parseLong(chatId),"SEEN");
         Notification notification=Notification.builder()
-                .chatId(chat.getId())
+                .chatId(chat.getId().toString())
 
                 .senderId(getSenderId(chat,currentUser))
                 .receiverId(recipientId)
@@ -123,13 +123,13 @@ public  class MessageServiceImp implements MessageService {
 
     private String getRecipientId(Chat chat, Authentication currentUser) {
         if(chat.getSender().getId().equals(currentUser.getName())){
-            return chat.getRecipient().getId().toString();
+            return chat.getReceiver().getId().toString();
         }
         return chat.getSender().getId().toString();
     }
     private String getSenderId(Chat chat, Authentication currentUser) {
         if(chat.getSender().getId().equals(currentUser.getName())){
-            return chat.getRecipient().getId().toString();
+            return chat.getReceiver().getId().toString();
         }
         return chat.getSender().getId().toString();
     }

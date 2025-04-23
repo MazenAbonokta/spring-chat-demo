@@ -24,7 +24,7 @@ import java.util.List;
 @Entity
 @Builder
 
-public class Chat extends BaseEntity {
+public  class Chat extends BaseEntity {
     /**
      * Unique identifier for the chat
      */
@@ -36,8 +36,8 @@ public class Chat extends BaseEntity {
     @JoinColumn(name = "sender_id")
     private User sender;
     @ManyToOne
-    @JoinColumn(name = "recipient_id")
-    private User recipient;
+    @JoinColumn(name = "receiver_id")
+    private User receiver;
     @OneToMany(mappedBy = "chat",fetch = FetchType.EAGER)
     @OrderBy("createdAt DESC")
     private List<Message>messages;
@@ -52,11 +52,11 @@ public class Chat extends BaseEntity {
 
     @Transient
     public String getChatName(final String senderId){
-        if (recipient.getId().equals(senderId))
+        if (receiver.getId().equals(senderId))
         {
             return sender.getFirstName()+" "+sender.getLastName();
         }
-        return recipient.getFirstName()+" "+recipient.getLastName();
+        return receiver.getFirstName()+" "+receiver.getLastName();
     }
     /**
      * Counts the number of unread messages for a specific user in this chat.

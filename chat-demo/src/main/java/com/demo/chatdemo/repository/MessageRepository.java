@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface MessageRepository extends JpaRepository<Message,Long> {
-List<Message> findAllByChatId(Long chatId);
+    List<Message> findAllByChatId(String chatId);
     @Modifying
     @Transactional
     @Query("UPDATE Message m SET m.state = :state WHERE m.chat.id = :id")
