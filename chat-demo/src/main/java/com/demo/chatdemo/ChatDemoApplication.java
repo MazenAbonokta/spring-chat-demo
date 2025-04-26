@@ -18,8 +18,8 @@ scheme = "bearer",
 in = SecuritySchemeIn.HEADER,
 flows = @OAuthFlows(
         password = @OAuthFlow(
-                tokenUrl = "http://localhost:8080/auth/realms/demo/protocol/openid-connect/token",
-        authorizationUrl = "http://localhost:8080/auth/realms/demo/protocol/openid-connect/auth")
+                tokenUrl = "http://localhost:9090/realms/master/protocol/openid-connect/token",
+        authorizationUrl = "http://localhost:9090/realms/master/protocol/openid-connect/auth")
 ))
 public class ChatDemoApplication {
 

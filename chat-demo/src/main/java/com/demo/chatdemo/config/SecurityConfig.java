@@ -7,7 +7,6 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfiguration;
@@ -26,11 +25,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth ->{
-                    auth.requestMatchers(PERMITTED_URLS.toArray(new String[0])).permitAll()
-                    .anyRequest().authenticated();
-
-                })
+                .authorizeHttpRequests(request ->
+                        request.requestMatchers( PERMITTED_URLS.toArray(new String[0])).permitAll()
+                                .anyRequest().authenticated()
+                )
                 .oauth2ResourceServer(resource->{
                     resource.jwt(token->{
                         token.jwtAuthenticationConverter(new KeyCloakJwtAuthenticationConverter());
