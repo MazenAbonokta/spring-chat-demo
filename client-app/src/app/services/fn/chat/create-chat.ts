@@ -11,8 +11,8 @@ import { RequestBuilder } from '../../request-builder';
 import { StringResponse } from '../../models/string-response';
 
 export interface CreateChat$Params {
-  senderId: number;
-  receiverId: number;
+  senderId: string;
+  receiverId: string;
 }
 
 export function createChat(http: HttpClient, rootUrl: string, params: CreateChat$Params, context?: HttpContext): Observable<StrictHttpResponse<StringResponse>> {

@@ -8,7 +8,7 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { MessageService } from './services/message.service';
 import { ChatService } from './services/chat.service';
-import { UserControllerService } from './services/user-controller.service';
+import { UserControllerService } from './services/user.service';
 
 /**
  * Module that provides all services and configuration.

@@ -4,4 +4,4 @@
 
 export { MessageService } from './services/message.service';
 export { ChatService } from './services/chat.service';
-export { UserControllerService } from './services/user-controller.service';
+export { UserControllerService } from './services/user.service';
