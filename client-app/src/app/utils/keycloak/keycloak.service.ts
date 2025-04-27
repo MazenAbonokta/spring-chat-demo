@@ -12,8 +12,8 @@ export class KeycloakService {
   get keycloak():Keycloak{
     if(!this._keycloak){
       this._keycloak= new Keycloak({
-        url: 'http://localhost:8080',
-        realm :'chat-demo',
+        url: 'http://localhost:9090',
+        realm :'master',
         clientId :'chat-demo'
       });
     }
